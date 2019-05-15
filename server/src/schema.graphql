@@ -1,0 +1,102 @@
+# import UserOrderByInput from './generated/prisma.graphql'
+
+type Query {
+    users(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [User!]!
+    posts(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [Post!]!
+    post(id: ID): Post!
+    reviews(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [Review!]!
+    me: User!
+}
+
+type Mutation {
+    createUser(data: CreateUserInput!): AuthPayload!
+    login(data: LoginUserInput!): AuthPayload!
+    deleteUser: User!
+    updateUser(data: UpdateUserInput!): User!
+    createPost(data: CreatePostInput!): Post!
+    updatePost(id: ID!, data: UpdatePostInput!): Post!
+    deletePost(id: ID!): Post!
+    createReview(data: CreateReviewInput!): Review!
+}
+
+# type Subscription {
+
+# }
+
+type AuthPayload {
+    token: String!
+    user: User!
+}
+
+input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+input LoginUserInput {
+    email: String!
+    password: String!
+}
+
+input UpdateUserInput {
+    name: String
+    email: String
+    password: String
+}
+
+input CreatePostInput {
+    title: String!
+    body: String!
+    location: String!
+    published: Boolean!
+}
+
+input UpdatePostInput {
+    title: String
+    body: String
+    location: String
+    published: Boolean
+}
+
+input CreateReviewInput {
+    comment: String!
+    post: ID!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+    posts: [Post!]!
+    updatedAt: String!
+    createdAt: String!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    body: String!
+    location: String!
+    published: Boolean!
+    author: User!
+    reivews: [Review!]!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type Review {
+    id: ID!
+    comment: String!
+    author: String!
+    post: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum MutationType {
+    CREATED
+    UPDATED
+    DELETED
+}
